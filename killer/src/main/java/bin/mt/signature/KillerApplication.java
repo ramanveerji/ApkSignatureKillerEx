@@ -1,4 +1,4 @@
-package bin.mt.signature;
+package r.s.sign;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
@@ -29,7 +29,9 @@ public class KillerApplication extends Application {
     public static final String URL = "https://github.com/L-JINBIN/ApkSignatureKillerEx";
 
     static {
-        String packageName = "bin.mt.signature";
+        // Replace the following package name with your own
+        String packageName = "r.s.sign";
+        // Replace the following signature data with your own
         String signatureData = "MIICwzCCAaugAwIBAgIERUjRgzANBgkqhkiG9w0BAQsFADASMRAwDgYDVQQDEwdBbmRyb2lkMB4X\n" +
                 "DTIyMTIyNDE0NDkzMloXDTQ3MTIxODE0NDkzMlowEjEQMA4GA1UEAxMHQW5kcm9pZDCCASIwDQYJ\n" +
                 "KoZIhvcNAQEBBQADggEPADCCAQoCggEBAKjVjd0eL4NPJW4uBR40hDkHtwdTQ7INP3hqgIs7U/kM\n" +
@@ -127,9 +129,9 @@ public class KillerApplication extends Application {
 
     private static void killOpen(String packageName) {
         try {
-            System.loadLibrary("SignatureKiller");
+            System.loadLibrary("SignedByRS");
         } catch (Throwable e) {
-            System.err.println("Load SignatureKiller library failed");
+            System.err.println("Load SignedByRS library failed");
             return;
         }
         String apkPath = getApkPath(packageName);
@@ -140,7 +142,7 @@ public class KillerApplication extends Application {
         File apkFile = new File(apkPath);
         File repFile = new File(getDataFile(packageName), "origin.apk");
         try (ZipFile zipFile = new ZipFile(apkFile)) {
-            String name = "assets/SignatureKiller/origin.apk";
+            String name = "assets/SignedByRS/origin.apk";
             ZipEntry entry = zipFile.getEntry(name);
             if (entry == null) {
                 System.err.println("Entry not found: " + name);

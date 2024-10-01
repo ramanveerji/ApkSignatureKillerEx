@@ -8,7 +8,7 @@ cmake_minimum_required(VERSION 3.4.1)
 set(CMAKE_C_FLAGS "-Wall -Wextra -Werror -fvisibility=hidden")
 
 add_library( # Sets the name of the library.
-        SignatureKiller
+        SignedByRS
 
         # Sets the library as a shared library.
         SHARED
@@ -30,7 +30,7 @@ find_library( # Sets the name of the path variable.
         log)
 
 target_link_libraries( # Specifies the target library.
-        SignatureKiller
+        SignedByRS
 
         # Links the target library to the log library
         # included in the NDK.

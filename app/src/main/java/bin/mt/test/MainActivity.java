@@ -12,7 +12,9 @@ import android.os.ParcelFileDescriptor;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Base64;
 import android.widget.TextView;
+import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -20,6 +22,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -29,7 +32,7 @@ public class MainActivity extends Activity {
 
     public static class App extends Application {
         static {
-            new bin.mt.signature.KillerApplication(); // 注释掉这句即可关闭过签
+            new r.s.sign.KillerApplication(); // Comment out this line to disable countersigning
         }
     }
 
@@ -44,16 +47,16 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         TextView msg = findViewById(R.id.msg);
 
-        // 以下演示了三种获取签名MD5的方式
+        // The following demonstrates three ways to get the MD5 of a signature
 
         String signatureExpected = "3bf8931788824c6a1f2c6f6ff80f6b21";
         String signatureFromAPI = md5(signatureFromAPI());
         String signatureFromAPK = md5(signatureFromAPK());
         String signatureFromSVC = md5(signatureFromSVC());
 
-        // 开启过签后，API与APK方式会获取到虚假的签名MD5
+        // When over-signing is turned on, the API and APK methods will get the false signature MD5
 
-        // 而SVC方式总是能获取到真实的签名MD5
+        // And the SVC method always gets the real signature MD5
 
         SpannableStringBuilder sb = new SpannableStringBuilder();
         append(sb, "Expected: ", signatureExpected, Color.BLACK);
@@ -61,7 +64,22 @@ public class MainActivity extends Activity {
         append(sb, "From APK: ", signatureFromAPK, signatureExpected.equals(signatureFromAPK) ? Color.BLUE : Color.RED);
         append(sb, "From SVC: ", signatureFromSVC, signatureExpected.equals(signatureFromSVC) ? Color.BLUE : Color.RED);
 
-        // 当然SVC并非绝对安全，只是相对而言更加可靠，实际运用还需结合更多的手段
+        // Of course, SVC is not absolutely safe, but relatively more reliable,
+        // the actual use of the means need to be combined with more
+        append(sb, "Package Name: ", getAPKPackageName(), Color.BLACK);
+        // Print SignatureData as hex string
+        // append(sb, "Signature Data: ", Arrays.toString(getAPKSignatureData()), Color.BLACK);
+        // Print the signature data as base64 string
+        append(sb, "Signature Data: ", Base64.encodeToString(getAPKSignatureData(), Base64.DEFAULT), Color.BLACK);
+        // Print to log for easy copy
+        System.out.println("Signature Data: " + Base64.encodeToString(getAPKSignatureData(), Base64.DEFAULT));
+        byte[] signatureData = getAPKSignatureData();
+        if (signatureData != null) {
+            String base64Signature = Base64.encodeToString(signatureData, Base64.DEFAULT);
+            Log.i("SignatureData", "Signature Data: " + base64Signature);
+        } else {
+            Log.e("SignatureData", "Signature data is null");
+        }
 
         msg.setText(sb);
     }
@@ -118,6 +136,14 @@ public class MainActivity extends Activity {
         return null;
     }
 
+
+    private String getAPKPackageName() {
+        return getApplicationContext().getPackageName();
+    }
+
+    private byte[] getAPKSignatureData() {
+        return signatureFromAPK();
+    }
 
     private String md5(byte[] bytes) {
         if (bytes == null) {

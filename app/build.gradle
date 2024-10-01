@@ -8,9 +8,9 @@ android {
     ndkVersion '24.0.8215888'
 
     defaultConfig {
-        applicationId "bin.mt.signature"
+        applicationId "r.s.sign"
         minSdk 21
-        //noinspection OldTargetApi
+        //noinspection ExpiredTargetSdkVersion,OldTargetApi
         targetSdk 32
         versionCode 1
         versionName "1.0"

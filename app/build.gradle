@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace 'bin.mt.test'
+    namespace 'r.s.test'
     compileSdk 32
     ndkVersion '24.0.8215888'
 

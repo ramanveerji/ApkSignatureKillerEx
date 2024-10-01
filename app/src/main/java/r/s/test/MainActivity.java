@@ -1,4 +1,4 @@
-package bin.mt.test;
+package r.s.test;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;

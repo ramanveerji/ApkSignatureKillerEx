@@ -3,7 +3,6 @@ package r.s.test;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -13,8 +12,8 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
-import android.widget.TextView;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -22,7 +21,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -30,15 +28,18 @@ import java.util.zip.ZipInputStream;
 
 public class MainActivity extends Activity {
 
-    public static class App extends Application {
-        static {
-            new r.s.sign.KillerApplication(); // Comment out this line to disable countersigning
-        }
-    }
-
     static {
         System.loadLibrary("test");
     }
+
+    private static void append(SpannableStringBuilder sb, String header, String value, int color) {
+        int start = sb.length();
+        sb.append(header).append(value).append("\n");
+        int end = sb.length();
+        sb.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    }
+
+    private static native int openAt(String path);
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -82,13 +83,6 @@ public class MainActivity extends Activity {
         }
 
         msg.setText(sb);
-    }
-
-    private static void append(SpannableStringBuilder sb, String header, String value, int color) {
-        int start = sb.length();
-        sb.append(header).append(value).append("\n");
-        int end = sb.length();
-        sb.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
     private byte[] signatureFromAPI() {
@@ -164,6 +158,10 @@ public class MainActivity extends Activity {
         }
     }
 
-    private static native int openAt(String path);
+    public static class App extends Application {
+        static {
+            new r.s.sign.KillerApplication(); // Comment out this line to disable countersigning
+        }
+    }
 
 }

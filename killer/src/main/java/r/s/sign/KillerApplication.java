@@ -218,3 +218,4 @@ public class KillerApplication extends Application {
 
     private static native void hookApkPath(String apkPath, String repPath);
 }
+

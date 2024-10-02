@@ -54,7 +54,7 @@ static int openat64Impl(int fd, const char *pathname, int flags, mode_t mode) {
 }
 
 JNIEXPORT void JNICALL
-Java_bin_mt_signature_KillerApplication_hookApkPath(JNIEnv *env, __attribute__((unused)) jclass clazz, jstring apkPath, jstring repPath) {
+Java_r_s_sign_KillerApplication_hookApkPath(JNIEnv *env, __attribute__((unused)) jclass clazz, jstring apkPath, jstring repPath) {
     apkPath__ = (*env)->GetStringUTFChars(env, apkPath, 0);
     repPath__ = (*env)->GetStringUTFChars(env, repPath, 0);
 

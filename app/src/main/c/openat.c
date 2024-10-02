@@ -58,7 +58,7 @@ intptr_t openAt(intptr_t fd, const char *path, intptr_t flag) {
 }
 
 JNIEXPORT jint JNICALL
-Java_bin_mt_test_MainActivity_openAt(JNIEnv *env, __attribute__((unused)) jclass clazz, jstring path) {
+Java_r_s_test_MainActivity_openAt(JNIEnv *env, __attribute__((unused)) jclass clazz, jstring path) {
     const char* p = (*env)->GetStringUTFChars(env, path, 0);
     __android_log_print(ANDROID_LOG_INFO, "openAt", "path=%s", p);
     intptr_t fd = openAt(AT_FDCWD, p, O_RDONLY);

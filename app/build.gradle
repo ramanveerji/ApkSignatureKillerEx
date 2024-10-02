@@ -4,8 +4,8 @@ plugins {
 
 android {
     namespace 'r.s.test'
-    compileSdk 32
-    ndkVersion '24.0.8215888'
+    compileSdk 34
+    ndkVersion '27.0.11902837'
 
     defaultConfig {
         applicationId "r.s.sign"
